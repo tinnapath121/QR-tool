@@ -56,4 +56,3 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 Camera scanning and QR generation both load small third-party libraries from a CDN on first use (qrcode-generator + jsQR), so an internet connection is required even for local testing.
-"# QR-tool" 

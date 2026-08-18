@@ -7,6 +7,14 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(self), microphone=(), geolocation=()
 
+# Keep CSS/JS caching short so a redeploy is visible to returning visitors
+# quickly, without relying solely on manually bumping the ?v= query string
+# on the <link>/<script> tags in index.html / 404.html.
+/css/*
+  Cache-Control: public, max-age=600, must-revalidate
+/js/*
+  Cache-Control: public, max-age=600, must-revalidate
+
 # -----------------------------------------------------------------------
 # Content-Security-Policy is intentionally left OFF by default.
 # A wrong CSP fails silently in production (fonts/ads/analytics just stop
