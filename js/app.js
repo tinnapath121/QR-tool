@@ -9,8 +9,8 @@
 /* =====================================================================
    0. CONFIG — fill these in once you have real accounts / a real domain
    ===================================================================== */
-var ADSENSE_CLIENT_ID = "ca-pub-8445441121083048"; // set — used by loadAdsenseIfConsented() once cookie consent is accepted
-var GA_MEASUREMENT_ID = ""; // e.g. "G-XXXXXXXXXX" (Google Analytics 4) — leave empty to keep analytics disabled
+var ADSENSE_CLIENT_ID = "ca-pub-8445441121083048"; // set — used by loadAdsense(), called unconditionally on page load (see section 9)
+var GA_MEASUREMENT_ID = "G-85XX83S6HN"; // Google Analytics 4 — loads via loadAnalyticsIfConsented() after cookie consent
 
 /* =====================================================================
    1. I18N — translation strings + locale detection
@@ -510,7 +510,10 @@ function generateQR(text, skipHistory){
       } else {
         showStatus(generateStatus, t("msgGenerated"), "success");
       }
-      if(!skipHistory) addHistoryEntry("generated", safeText);
+      if(!skipHistory){
+        addHistoryEntry("generated", safeText);
+        trackEvent("generate_qr_code");
+      }
     }catch(err){
       console.error(err);
       showStatus(generateStatus, "Could not render QR code.", "error");
@@ -523,6 +526,7 @@ function generateQR(text, skipHistory){
 
 downloadPngBtn.addEventListener("click", function(){
   if(!lastPngDataUrl) return;
+  trackEvent("download_qr_code", {format: "png"});
   var link = document.createElement("a");
   link.download = "qr-code.png";
   link.href = lastPngDataUrl;
@@ -535,6 +539,7 @@ downloadSvgBtn.addEventListener("click", function(){
     var svgStr = lastSvgBuilder();
     var blob = new Blob([svgStr], {type: "image/svg+xml"});
     var url = URL.createObjectURL(blob);
+    trackEvent("download_qr_code", {format: "svg"});
     var link = document.createElement("a");
     link.download = "qr-code.svg";
     link.href = url;
@@ -646,6 +651,7 @@ function handleDecodedText(text, source){
   copyResultBtn.disabled = false;
   showStatus(scanStatus, t("msgScanSuccess"), "success");
   addHistoryEntry("scanned", text);
+  trackEvent("scan_qr_code", {source: source}); // source: "camera" | "upload"
   if(source === "camera") stopCamera();
 }
 
@@ -860,11 +866,22 @@ document.getElementById("clearHistoryBtn").addEventListener("click", function(){
 });
 
 /* =====================================================================
-   9. COOKIE CONSENT + ADSENSE LOADER
+   9. ADSENSE LOADER + COOKIE CONSENT (for analytics only)
+   =====================================================================
+   Ad serving is NOT gated behind cookie consent: outside the EEA/UK/
+   Switzerland, Google doesn't require consent to show ads at all, and
+   inside those regions Google's own systems automatically restrict ads
+   to non-personalized when no certified Consent Management Platform
+   (CMP) is detected — this site doesn't have one, so that's the
+   applicable case there. Blocking ALL ads until a cookie click (the
+   previous behavior here) was stricter than Google requires and simply
+   cost impressions. See DEPLOY-GUIDE.md step 9 for the EEA/UK/CH detail,
+   and ask if you want a full Google Consent Mode v2 integration later to
+   unlock personalized ads (higher RPM) for EEA/UK/CH visitors who accept.
    ===================================================================== */
 var COOKIE_CONSENT_KEY = "uqrt_cookie_consent";
 
-function loadAdsenseIfConsented(){
+function loadAdsense(){
   if(!ADSENSE_CLIENT_ID) return; // not configured yet — see the CONFIG section at top of this file
   if(document.getElementById("adsbygoogle-loader")) return; // already loaded
   var s = document.createElement("script");
@@ -893,24 +910,38 @@ function loadAnalyticsIfConsented(){
   document.head.appendChild(s);
 }
 
+// Fires a GA4 custom event, but only for visitors who accepted the cookie
+// banner (gtag only exists once loadAnalyticsIfConsented() has run — see
+// above). Silently does nothing for declined/undecided visitors, which is
+// intentional: we don't track anyone who hasn't consented to being tracked.
+function trackEvent(name, params){
+  if(!window.gtag) return;
+  try{ window.gtag("event", name, params || {}); }catch(e){ /* no-op */ }
+}
+
 function initCookieConsent(){
   var banner = document.getElementById("cookieBanner");
   var consent = localStorage.getItem(COOKIE_CONSENT_KEY);
   if(!consent){
     banner.hidden = false;
   } else if(consent === "accepted"){
-    loadAdsenseIfConsented();
     loadAnalyticsIfConsented();
   }
   document.getElementById("cookieAcceptBtn").addEventListener("click", function(){
     localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
     banner.hidden = true;
-    loadAdsenseIfConsented();
     loadAnalyticsIfConsented();
+    trackEvent("cookie_consent", {choice: "accepted"}); // after loadAnalyticsIfConsented() so gtag exists
   });
   document.getElementById("cookieDeclineBtn").addEventListener("click", function(){
     localStorage.setItem(COOKIE_CONSENT_KEY, "declined");
     banner.hidden = true;
+    // Intentionally NOT tracked: analytics never loads for a visitor who
+    // declined, so there's no consent-compliant way to log this choice in
+    // GA4 itself. To measure an accept/decline RATE (not just accept
+    // count) you'd need either a small serverless counter endpoint, or
+    // Google Consent Mode v2 (modeled/cookieless pings even when declined)
+    // — ask if you want either of those added.
   });
 }
 
@@ -938,7 +969,9 @@ document.getElementById("langSelect").addEventListener("change", function(e){
 });
 document.getElementById("darkModeToggle").addEventListener("click", function(){
   var current = document.documentElement.getAttribute("data-theme");
-  applyTheme(current === "dark" ? "light" : "dark");
+  var next = current === "dark" ? "light" : "dark";
+  trackEvent("toggle_dark_mode", {mode: next});
+  applyTheme(next);
 });
 
 /* =====================================================================
@@ -947,6 +980,7 @@ document.getElementById("darkModeToggle").addEventListener("click", function(){
 initTheme();
 applyLanguage(detectLocale());
 renderHistory();
+loadAdsense(); // unconditional — see the note above initCookieConsent()/loadAdsense()
 initCookieConsent();
 initStickyBanner();
 
