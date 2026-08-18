@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — Universal QR Tool</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="images/logo-qr.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .error-page{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:2rem;gap:1rem;
+  }
+  .error-page img{width:72px;height:72px;margin-bottom:.5rem;}
+  .error-page h1{font-size:1.6rem;margin:0;}
+  .error-page p{color:var(--text-muted);max-width:40ch;margin:0;}
+  .error-code{font-size:.85rem;color:var(--text-muted);letter-spacing:.05em;}
+</style>
+</head>
+<body>
+<!-- This 404 page is intentionally kept single-language (English) for simplicity —
+     the rest of the site auto-detects the visitor's language, but a static error
+     page doesn't run that detection logic before it's shown. -->
+<div class="error-page">
+  <img src="images/logo-qr.svg" alt="Universal QR Tool logo">
+  <p class="error-code">404</p>
+  <h1>This page couldn't be found</h1>
+  <p>The page you're looking for doesn't exist or may have moved. Let's get you back to generating or scanning QR codes.</p>
+  <a class="btn" href="/">Back to Universal QR Tool</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universal QR Tool — Free QR Code Generator &amp; Scanner</title>
+<meta name="description" content="Universal QR Tool: generate QR codes from text, URLs or numbers, and scan QR codes with your camera or an uploaded image. Free, fast, private — runs entirely in your browser.">
+<meta name="keywords" content="QR code generator, QR code scanner, QR reader, free QR tool, online QR code">
+<meta name="theme-color" content="#ffffff">
+
+<!--
+  =====================================================================
+  IMPORTANT — before going live, replace every "https://your-domain.com"
+  placeholder below (canonical, og:url, og:image, twitter:image, and the
+  one in sitemap.xml / robots.txt) with your real Netlify/custom domain.
+  =====================================================================
+-->
+<link rel="canonical" href="https://your-domain.com/">
+<meta property="og:title" content="Universal QR Tool">
+<meta property="og:description" content="Generate and scan QR codes instantly — free, fast, and private.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://your-domain.com/">
+<meta property="og:image" content="https://your-domain.com/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Universal QR Tool">
+<meta name="twitter:description" content="Generate and scan QR codes instantly — free, fast, and private.">
+<meta name="twitter:image" content="https://your-domain.com/images/og-image.png">
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="images/logo-qr.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="192x192" href="images/icon-192.png">
+
+<!-- Universal font for full language coverage -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Thai:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Structured data: helps Google understand & show rich results for this page -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Universal QR Tool",
+  "url": "https://your-domain.com/",
+  "description": "Generate QR codes from text, URLs or numbers, and scan QR codes using your camera or an uploaded image. Free, fast, and entirely private — runs in your browser.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is this QR code tool free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes. Generating and scanning QR codes is completely free, with no sign-up required and no limit on everyday use."}},
+    {"@type":"Question","name":"Is my data safe when I use this tool?","acceptedAnswer":{"@type":"Answer","text":"Yes. All QR generation and scanning happens locally in your browser — nothing you type, scan or upload is sent to a server."}},
+    {"@type":"Question","name":"Why is my camera not working?","acceptedAnswer":{"@type":"Answer","text":"Your browser may be blocking camera access, or your device may not have a camera. Check your browser's site permissions, or use the image upload option instead."}},
+    {"@type":"Question","name":"What is the difference between PNG and SVG downloads?","acceptedAnswer":{"@type":"Answer","text":"PNG is a fixed-resolution image ideal for screens and everyday sharing. SVG is a scalable vector format that stays sharp at any size, making it best for printing and large designs."}}
+  ]
+}
+</script>
+
+<!--
+  =====================================================================
+  GOOGLE ADSENSE — the loader script is injected dynamically by js/app.js
+  (function loadAdsenseIfConsented) only after: (1) you set ADSENSE_CLIENT_ID
+  near the top of js/app.js, and (2) the visitor accepts the cookie banner.
+  This keeps the site consent-gated instead of loading ads unconditionally.
+  =====================================================================
+-->
+</head>
+<body>
+<a href="#mainContent" class="skip-link" data-i18n="skipToContent">Skip to content</a>
+
+<!-- ============================= HEADER ============================= -->
+<header class="site-header">
+  <div class="brand">
+    <img src="images/logo-qr.svg" width="30" height="30" alt="Universal QR Tool logo">
+    <span data-i18n="brandName">Universal QR Tool</span>
+  </div>
+  <div class="header-controls">
+    <label for="langSelect" class="visually-hidden" data-i18n="languageLabel">Language</label>
+    <select id="langSelect" aria-label="Language">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="pt">Português</option>
+      <option value="ru">Русский</option>
+      <option value="ar">العربية</option>
+      <option value="zh">简体中文</option>
+      <option value="th">ไทย</option>
+    </select>
+    <button id="darkModeToggle" class="icon-btn" type="button" aria-pressed="false">
+      <span aria-hidden="true">🌓</span>
+      <span data-i18n="darkMode">Dark mode</span>
+    </button>
+  </div>
+</header>
+
+<div class="page-shell">
+  <!-- ============================= SIDEBAR AD (left) ============================= -->
+  <aside class="sidebar-ad" aria-hidden="true">
+    <div class="ad-slot ad-slot-sticky" style="height:600px">
+      <!-- Google AdSense vertical unit placeholder — standard IAB skyscraper 160x600 (or 300x600 half-page)
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="vertical"></ins>
+      -->
+      <span data-i18n="adLabel">Advertisement</span>
+    </div>
+  </aside>
+
+  <main id="mainContent">
+
+    <p style="max-width:70ch;color:var(--text-muted);margin-top:0" data-i18n="tagline">
+      Create QR codes from text, links or numbers, and scan any QR code using your camera or an uploaded photo — free, fast and entirely in your browser.
+    </p>
+
+    <!-- ============================= READER (step 1) ============================= -->
+    <section class="card" aria-labelledby="readHeading">
+      <h2 id="readHeading"><span class="step-num" aria-hidden="true">1</span><span data-i18n="readerTitle">Scan / Read a QR Code</span></h2>
+      <div class="split">
+        <div>
+          <div class="btn-row" style="margin-top:0">
+            <button id="startCameraBtn" class="btn" type="button" data-i18n="startCamera">Start Camera Scan</button>
+            <button id="stopCameraBtn" class="btn secondary" type="button" hidden data-i18n="stopCamera">Stop Camera</button>
+          </div>
+          <video id="cameraView" hidden autoplay muted playsinline aria-label="Camera preview"></video>
+          <canvas id="scanCanvas" class="visually-hidden" aria-hidden="true"></canvas>
+
+          <p class="field-hint" data-i18n="orUpload" style="margin-top:1rem">No camera? Upload an image containing a QR code instead:</p>
+          <div class="btn-row" style="margin-top:.5rem">
+            <button id="chooseFileBtn" class="btn" type="button">
+              <span aria-hidden="true">🖼️</span> <span data-i18n="uploadLabel">Upload QR Image</span>
+            </button>
+          </div>
+          <label for="qrFileInput" class="visually-hidden" data-i18n="uploadLabel">Upload QR image</label>
+          <input type="file" id="qrFileInput" accept="image/*" tabindex="-1">
+          <span id="fileNameDisplay" class="field-hint" aria-live="polite"></span>
+          <div id="scanStatus" class="status-msg" role="status" aria-live="polite"></div>
+        </div>
+        <div>
+          <label for="scanResultBox" data-i18n="decodedLabel">Decoded content</label>
+          <div id="scanResultBox" class="scan-result-box" tabindex="0"></div>
+          <div class="btn-row">
+            <button id="copyResultBtn" class="btn secondary" type="button" disabled data-i18n="copyBtn">Copy to Clipboard</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= GENERATOR (step 2) ============================= -->
+    <section class="card" aria-labelledby="genHeading">
+      <h2 id="genHeading"><span class="step-num" aria-hidden="true">2</span><span data-i18n="generatorTitle">Generate a QR Code</span></h2>
+      <div class="split">
+        <div>
+          <label for="qrInput" data-i18n="inputLabel">Text, URL or number</label>
+          <textarea id="qrInput" maxlength="1500" placeholder="https://example.com" aria-describedby="qrInputHint"></textarea>
+          <p id="qrInputHint" class="field-hint" data-i18n="inputHint">Up to 1500 characters. Special characters are automatically escaped for safety.</p>
+
+          <div class="qr-customize">
+            <div class="color-field">
+              <label for="qrFgColor" data-i18n="qrColorLabel">QR Color</label>
+              <input type="color" id="qrFgColor" value="#000000">
+            </div>
+            <div class="color-field">
+              <label for="qrBgColor" data-i18n="bgColorLabel">Background Color</label>
+              <input type="color" id="qrBgColor" value="#ffffff">
+            </div>
+          </div>
+
+          <div class="logo-field">
+            <label data-i18n="logoLabel">Center Logo (optional)</label>
+            <div class="btn-row" style="margin-top:.4rem">
+              <button id="chooseLogoBtn" class="btn secondary" type="button">
+                <span aria-hidden="true">🖼️</span> <span data-i18n="chooseLogoBtn">Choose Logo</span>
+              </button>
+              <button id="removeLogoBtn" class="btn secondary" type="button" hidden data-i18n="removeLogoBtn">Remove Logo</button>
+            </div>
+            <label for="qrLogoInput" class="visually-hidden" data-i18n="chooseLogoBtn">Choose Logo</label>
+            <input type="file" id="qrLogoInput" accept="image/*" tabindex="-1">
+            <span id="logoNameDisplay" class="field-hint" aria-live="polite"></span>
+          </div>
+
+          <div class="btn-row">
+            <button id="generateBtn" class="btn" type="button" data-i18n="generateBtn">Generate QR Code</button>
+            <button id="clearInputBtn" class="btn secondary" type="button" data-i18n="clearBtn">Clear</button>
+          </div>
+          <div id="generateStatus" class="status-msg" role="status" aria-live="polite"></div>
+        </div>
+        <div>
+          <div id="qrPreview" class="qr-preview">
+            <p class="qr-placeholder" data-i18n="previewPlaceholder">Your QR code will appear here</p>
+          </div>
+          <div class="btn-row" style="justify-content:center">
+            <button id="downloadPngBtn" class="btn secondary" type="button" disabled data-i18n="downloadPng">Download PNG</button>
+            <button id="downloadSvgBtn" class="btn secondary" type="button" disabled data-i18n="downloadSvg">Download SVG</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= HISTORY ============================= -->
+    <section class="card" aria-labelledby="historyHeading">
+      <h2 id="historyHeading" data-i18n="historyTitle">History</h2>
+      <ul id="historyList" class="history-list"></ul>
+      <p id="historyEmpty" class="history-empty" data-i18n="historyEmpty">No history yet.</p>
+      <div class="btn-row">
+        <button id="clearHistoryBtn" class="btn danger" type="button" data-i18n="clearHistory">Clear History</button>
+      </div>
+    </section>
+
+    <!-- ============================= INLINE AD (between History and How-To) ============================= -->
+    <div class="inline-ad" aria-hidden="true">
+      <div class="ad-slot" style="height:250px">
+        <!-- Google AdSense in-content unit placeholder — e.g. 336x280 / 300x250 large rectangle
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="rectangle"></ins>
+        -->
+        <span data-i18n="adLabel">Advertisement</span>
+      </div>
+    </div>
+
+    <!-- ============================= HOW-TO / FAQ (content depth) ============================= -->
+    <section class="card article" aria-labelledby="articleHeading">
+      <h2 id="articleHeading" data-i18n="articleTitle">How QR Codes Work</h2>
+      <p data-i18n="articleIntro">A QR (Quick Response) code is a two-dimensional barcode that stores text, links or numbers in a pattern of black and white squares. Any phone camera or QR scanner can read it instantly, making it useful for sharing links, contact details, Wi-Fi credentials and more.</p>
+
+      <h3 data-i18n="howToGenTitle">How to create a QR code</h3>
+      <p data-i18n="howToGenText">Type or paste your text, URL or number into the generator box above and click "Generate QR Code". A QR code image appears instantly — download it as a PNG for everyday use or as an SVG for print and large-format designs.</p>
+
+      <h3 data-i18n="howToScanTitle">How to scan a QR code</h3>
+      <p data-i18n="howToScanText">Click "Start Camera Scan" and point your device's camera at a QR code — it will be decoded automatically. If your device has no camera or you prefer not to grant camera access, upload a photo containing a QR code instead and it will be decoded the same way.</p>
+
+      <h3 data-i18n="faqTitle">Frequently Asked Questions</h3>
+      <details class="faq-item">
+        <summary data-i18n="faq1Q">Is this QR code tool free to use?</summary>
+        <p data-i18n="faq1A">Yes. Generating and scanning QR codes is completely free, with no sign-up required and no limit on everyday use.</p>
+      </details>
+      <details class="faq-item">
+        <summary data-i18n="faq2Q">Is my data safe when I use this tool?</summary>
+        <p data-i18n="faq2A">Yes. All QR generation and scanning happens locally in your browser — nothing you type, scan or upload is sent to a server.</p>
+      </details>
+      <details class="faq-item">
+        <summary data-i18n="faq3Q">Why is my camera not working?</summary>
+        <p data-i18n="faq3A">Your browser may be blocking camera access, or your device may not have a camera. Check your browser's site permissions, or use the image upload option instead.</p>
+      </details>
+      <details class="faq-item">
+        <summary data-i18n="faq4Q">What is the difference between PNG and SVG downloads?</summary>
+        <p data-i18n="faq4A">PNG is a fixed-resolution image ideal for screens and everyday sharing. SVG is a scalable vector format that stays sharp at any size, making it best for printing and large designs.</p>
+      </details>
+    </section>
+
+    <!-- ============================= PRIVACY POLICY ============================= -->
+    <section class="card" id="privacyPolicy" aria-labelledby="privacyHeading">
+      <h2 id="privacyHeading" data-i18n="privacyPolicyTitle">Privacy Policy</h2>
+      <div lang="en">
+        <h3>What data we collect</h3>
+        <p>Universal QR Tool runs entirely in your browser. Text you type, QR codes you generate, and QR codes you scan are processed locally on your device and are never uploaded to any server. Your generation/scan history and language/theme preferences are stored only in your browser's local storage and can be cleared at any time using the "Clear History" button or by clearing your browser data.</p>
+        <h3>Camera access</h3>
+        <p>If you use the camera scan feature, video frames are analyzed locally in your browser to detect QR codes. No video or image data is recorded, stored, or transmitted anywhere. You can revoke camera permission at any time in your browser settings.</p>
+        <h3>Advertising &amp; cookies</h3>
+        <p>This site may display advertisements served by Google AdSense. Google and its partners may use cookies or similar technologies to serve ads based on your prior visits to this or other websites. Ad-related cookies are only set after you accept the cookie banner shown on this site. You can opt out of personalized advertising at any time by visiting <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>. For more information on how Google uses data, see <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites that use our services</a>.</p>
+        <h3>Third-party links</h3>
+        <p>This page may contain links to third-party sites (such as the ones above). We are not responsible for the privacy practices of those sites and encourage you to review their policies.</p>
+        <h3>Contact</h3>
+        <p>If you have questions about this privacy policy, please use the contact information provided on this site's homepage/footer.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================= SIDEBAR AD (right) ============================= -->
+  <aside class="sidebar-ad" aria-hidden="true">
+    <div class="ad-slot ad-slot-sticky" style="height:600px">
+      <!-- Google AdSense vertical unit placeholder — standard IAB skyscraper 160x600 (or 300x600 half-page)
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="vertical"></ins>
+      -->
+      <span data-i18n="adLabel">Advertisement</span>
+    </div>
+  </aside>
+</div>
+
+<!-- ============================= FOOTER AD ============================= -->
+<div class="footer-ad" aria-hidden="true">
+  <div class="ad-slot" style="height:100px">
+    <!-- Google AdSense footer unit placeholder — standard IAB leaderboard 728x90
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="horizontal"></ins>
+    -->
+    <span data-i18n="adLabel">Advertisement</span>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p class="footer-links"><a href="#privacyPolicy" data-i18n="privacyPolicyTitle">Privacy Policy</a></p>
+  <p data-i18n="footerText">Universal QR Tool — all processing happens locally in your browser. No data is uploaded.</p>
+</footer>
+
+<!-- ============================= MOBILE ANCHOR AD (dismissible) ============================= -->
+<div class="anchor-ad" id="anchorAd" aria-hidden="true">
+  <button class="anchor-ad-close" id="anchorAdClose" type="button" aria-label="Close ad">×</button>
+  <div class="ad-slot" style="height:50px">
+    <!-- Google AdSense mobile anchor unit placeholder — 320x50 banner
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="horizontal"></ins>
+    -->
+    <span data-i18n="adLabel">Advertisement</span>
+  </div>
+</div>
+
+<!-- ============================= COOKIE CONSENT BANNER ============================= -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
+  <p data-i18n="cookieConsentText">We use cookies to serve ads and analyze traffic. By clicking Accept, you agree to this. See our Privacy Policy for details.</p>
+  <div class="cookie-banner-actions">
+    <button id="cookieDeclineBtn" class="btn secondary" type="button" data-i18n="cookieDecline">Decline</button>
+    <button id="cookieAcceptBtn" class="btn" type="button" data-i18n="cookieAccept">Accept</button>
+  </div>
+</div>
+
+<script src="js/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Netlify reads this file automatically and applies these headers to every response.
+# Reference: https://docs.netlify.com/routing/headers/
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=()
+
+# -----------------------------------------------------------------------
+# Content-Security-Policy is intentionally left OFF by default.
+# A wrong CSP fails silently in production (fonts/ads/analytics just stop
+# loading, no error dialog) so it's safer to add it deliberately once you
+# know exactly which third-party domains you're using, rather than ship
+# a guessed policy. Once you've set ADSENSE_CLIENT_ID / GA_MEASUREMENT_ID
+# in js/app.js, uncomment and test the line below on a staging deploy,
+# checking the browser console for "Refused to..." CSP errors:
+#
+#   Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com
+#
+# 'unsafe-inline' is included for script-src/style-src because this page
+# uses inline JSON-LD <script> blocks and a few inline style="" attributes;
+# tightening that further (nonces/hashes) is a good follow-up once the
+# site is stable, but isn't required for the header to be useful.
+# -----------------------------------------------------------------------
