@@ -9,12 +9,11 @@ Static, no-backend QR code generator + scanner. Plain HTML/CSS/JS — deploy as-
    - `robots.txt` (Sitemap line)
    - `sitemap.xml` (`<loc>`)
 
-2. **Google AdSense**
-   - Apply for AdSense once the site is live on a real domain (AdSense will not approve `localhost` or unpublished sites).
-   - Once approved, set `ADSENSE_CLIENT_ID` near the top of `js/app.js` to your `ca-pub-XXXXXXXXXXXXXXXX` value.
-   - Uncomment the `<ins class="adsbygoogle">` blocks in `index.html` you want to activate (there are 4 placeholder slots: left/right sidebar, footer, and a dismissible mobile anchor ad — feel free to delete any you don't want, or add back an in-content/top-leaderboard slot later if traffic justifies it).
-   - Add a `ads.txt` file at the site root with the line Google gives you in your AdSense account (Sites → your domain → View ads.txt guidance). This is required for AdSense to pay out correctly.
-   - The site only injects the AdSense loader script after a visitor accepts the cookie-consent banner (see `loadAdsenseIfConsented()` in `js/app.js`), which keeps things consent-compliant.
+2. **Google AdSense — current status: applied, awaiting approval**
+   - `ADSENSE_CLIENT_ID` in `js/app.js` is already set to `ca-pub-8445441121083048`.
+   - `ads.txt` already exists at the site root with the standard line for this publisher ID.
+   - `index.html` currently has the AdSense script pasted **unconditionally** in `<head>` (not gated by cookie consent) so Google's review crawler can find it during the application review — see the comment right above that `<script>` tag. **Once the AdSense account is approved, delete that unconditional `<script>` tag** — the site will keep working fine afterwards because `loadAdsenseIfConsented()` in `js/app.js` already injects the same script (with the same client ID) after a visitor accepts the cookie banner, which is the proper consent-compliant way to load it long-term.
+   - Uncomment the `<ins class="adsbygoogle">` blocks in `index.html` you want to activate (there are 4 placeholder slots: left/right rail, footer, and a dismissible mobile sticky banner — feel free to delete any you don't want, or add an in-content slot later if traffic justifies it). Fill in the real `data-ad-slot` values AdSense gives you per ad unit.
 
 3. **Camera scanning requires a secure context** — `getUserMedia` (camera access) only works over **HTTPS** or on `http://localhost`. Opening `index.html` directly via `file://` will always fail with a permission/security error — this is a browser restriction, not a bug. Test camera scanning either with a local dev server (`npx serve`, `python3 -m http.server`, etc.) or after deploying to Netlify.
 

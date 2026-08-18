@@ -9,7 +9,7 @@
 /* =====================================================================
    0. CONFIG — fill these in once you have real accounts / a real domain
    ===================================================================== */
-var ADSENSE_CLIENT_ID = ""; // e.g. "ca-pub-XXXXXXXXXXXXXXXX" — leave empty to keep ads disabled
+var ADSENSE_CLIENT_ID = "ca-pub-8445441121083048"; // set — used by loadAdsenseIfConsented() once cookie consent is accepted
 var GA_MEASUREMENT_ID = ""; // e.g. "G-XXXXXXXXXX" (Google Analytics 4) — leave empty to keep analytics disabled
 
 /* =====================================================================

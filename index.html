@@ -68,12 +68,19 @@
 
 <!--
   =====================================================================
-  GOOGLE ADSENSE — the loader script is injected dynamically by js/app.js
-  (function loadAdsenseIfConsented) only after: (1) you set ADSENSE_CLIENT_ID
-  near the top of js/app.js, and (2) the visitor accepts the cookie banner.
-  This keeps the site consent-gated instead of loading ads unconditionally.
+  GOOGLE ADSENSE — the loader script is ALSO injected dynamically by
+  js/app.js (function loadAdsenseIfConsented) after the visitor accepts
+  the cookie banner, using the ADSENSE_CLIENT_ID set near the top of
+  js/app.js. That's the normal, consent-compliant way this site loads ads.
+
+  The unconditional <script> tag below is TEMPORARY — added only so
+  Google's site-verification / review crawler can find the AdSense code
+  without needing to click "Accept" on the cookie banner first (it likely
+  won't). REMOVE this block once your AdSense account is approved — after
+  that, the consent-gated loader above is enough on its own.
   =====================================================================
 -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445441121083048" crossorigin="anonymous"></script>
 </head>
 <body>
 <a href="#mainContent" class="skip-link" data-i18n="skipToContent">Skip to content</a>
@@ -319,6 +326,6 @@
   </div>
 </div>
 
-<script src="js/app.js?v=3" defer></script>
+<script src="js/app.js?v=4" defer></script>
 </body>
 </html>
