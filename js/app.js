@@ -915,18 +915,18 @@ function initCookieConsent(){
 }
 
 /* =====================================================================
-   10. MOBILE ANCHOR AD (dismissible, session-only)
+   10. MOBILE STICKY BANNER (dismissible, session-only)
    ===================================================================== */
-function initAnchorAd(){
-  var anchorAd = document.getElementById("anchorAd");
-  var closeBtn = document.getElementById("anchorAdClose");
-  if(!anchorAd || !closeBtn) return;
-  if(!sessionStorage.getItem("uqrt_anchor_dismissed")){
-    anchorAd.classList.add("visible");
+function initStickyBanner(){
+  var stickyBanner = document.getElementById("stickyBanner");
+  var closeBtn = document.getElementById("stickyBannerClose");
+  if(!stickyBanner || !closeBtn) return;
+  if(!sessionStorage.getItem("uqrt_banner_dismissed")){
+    stickyBanner.classList.add("visible");
   }
   closeBtn.addEventListener("click", function(){
-    anchorAd.classList.remove("visible");
-    sessionStorage.setItem("uqrt_anchor_dismissed", "1");
+    stickyBanner.classList.remove("visible");
+    sessionStorage.setItem("uqrt_banner_dismissed", "1");
   });
 }
 
@@ -948,6 +948,6 @@ initTheme();
 applyLanguage(detectLocale());
 renderHistory();
 initCookieConsent();
-initAnchorAd();
+initStickyBanner();
 
 })();
